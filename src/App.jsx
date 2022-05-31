@@ -1,31 +1,32 @@
-import Expenses from "./components/Expenses/Expenses";
-import NewExpense from "./components/NewExpense/NewExpense";
 import { useState } from "react";
-const INITIAL_EXPENSES = [
-  {
-    title: "Car Insurance",
-    amount: 295.42,
-    date: new Date(2022, 2, 28),
-  },
-  {
-    title: "Brush",
-    amount: 123.2,
-    date: new Date(2022, 5, 20),
-  },
-];
-const App = () => {
-  const [expenses, setExpenses] = useState(INITIAL_EXPENSES);
+import List from "./components/List";
+import Modal from "./components/Modal";
+import AddUser from "./components/Users/AddUser";
 
-  const addExpenseHandler = (expense) => {
-    setExpenses((prevExpenses) => {
-      return [expense, ...prevExpenses];
-    });
+const App = () => {
+  const [list, setList] = useState([]);
+  const [flag, setFlag] = useState("");
+  const submitHandler = (name, age) => {
+    console.log(age);
+    if (name.trim().length === 0 || age.toString().trim().length === 0) {
+      setFlag("input");
+      return;
+    }
+    if (age < 0) {
+      setFlag("minus");
+      return;
+    }
+    setList([...list, { name: name, age: age }]);
   };
+
+  // 1. 입력 미완성
+  // 2. 나이가 음수
 
   return (
     <div className="App">
-      <NewExpense onAddExpense={addExpenseHandler} />
-      <Expenses items={expenses} />
+      <AddUser list={list} onSubmit={submitHandler} />
+      <List list={list} />
+      <Modal flag={flag} />
     </div>
   );
 };
