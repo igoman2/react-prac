@@ -1,34 +1,24 @@
 import { useState } from "react";
-import List from "./components/List";
-import Modal from "./components/Modal";
 import AddUser from "./components/Users/AddUser";
+import UserList from "./components/Users/UserList";
 
 const App = () => {
-  const [list, setList] = useState([]);
-  const [flag, setFlag] = useState("");
-  const submitHandler = (name, age) => {
-    console.log(age);
-    if (name.trim().length === 0 || age.toString().trim().length === 0) {
-      setFlag("input");
-      return;
-    }
-    if (age < 0) {
-      setFlag("minus");
-      return;
-    }
-    setList([...list, { name: name, age: age }]);
-  };
+    const [usersList, setUsersList] = useState([]);
+    const addUserHandler = (uName, uAge) => {
+        setUsersList((prevUsersList) => {
+            return [
+                ...prevUsersList,
+                { name: uName, age: uAge, id: Math.random().toString() },
+            ];
+        });
+    };
 
-  // 1. 입력 미완성
-  // 2. 나이가 음수
-
-  return (
-    <div className="App">
-      <AddUser list={list} onSubmit={submitHandler} />
-      <List list={list} />
-      <Modal flag={flag} />
-    </div>
-  );
+    return (
+        <div className="App">
+            <AddUser users={usersList} onAddUser={addUserHandler} />
+            <UserList users={usersList} />
+        </div>
+    );
 };
 
 export default App;
